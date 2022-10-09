@@ -74,11 +74,13 @@ is provided, add each of the directories to asdf:*central-registry*"
             ;; The most common situation, do nothing
             (values))
            (t
+            (run-program-with-errors (git "remote" "set-url"
+                                          "origin" repo))
             (run-program-with-errors (git
                                       "fetch"
-                                      repo
+                                      "origin"
                                       commit))
-            (checkout))))
+            (prepare-git-repo repo (rev-parse (format nil "origin/~a" commit)) cache-dir))))
         (t
          (run-program-with-errors (list
                                    "git" "clone"
